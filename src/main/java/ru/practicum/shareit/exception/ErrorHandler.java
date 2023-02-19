@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.item.OtherUserException;
 import ru.practicum.shareit.user.EmailDuplicateException;
 
-import java.io.ByteArrayOutputStream;
+/*import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.StandardCharsets;*/
 
 @RestControllerAdvice
 @Slf4j
