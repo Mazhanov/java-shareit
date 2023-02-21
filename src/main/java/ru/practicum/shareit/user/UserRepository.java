@@ -4,16 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.ObjectNotFoundException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
 public class UserRepository {
     private Map<Long, User> users = new HashMap<>();
-    private Map<String, Long> emails = new HashMap<>();
+    private Set<String> emails = new HashSet<>();
     private long userId = 0;
 
     public User getById(long id) {
@@ -28,29 +25,30 @@ public class UserRepository {
     public User create(User user) {
         checkEmail(user);
         generateUserId(user);
-        emails.put(user.getEmail(), user.getId());
+        emails.add(user.getEmail());
         users.put(user.getId(), user);
         return user;
     }
 
-    public User update(User user) {
-        checkId(user.getId());
+    public User update(User user, long id) {
+        checkId(id);
+        user.setId(id);
 
         if (!(user.getEmail() == null)) {
-            if (!(user.getEmail().equals(users.get(user.getId()).getEmail()))) {
+            if (!(user.getEmail().equals(users.get(id).getEmail()))) {
                 checkEmail(user);
-                emails.remove(users.get(user.getId()).getEmail());
-                emails.put(user.getEmail(), user.getId());
+                emails.remove(users.get(id).getEmail());
+                emails.add(user.getEmail());
             }
         }
 
         if (user.getName() != null) {
-            users.get(user.getId()).setName(user.getName());
+            users.get(id).setName(user.getName());
         }
         if (user.getEmail() != null) {
-            users.get(user.getId()).setEmail(user.getEmail());
+            users.get(id).setEmail(user.getEmail());
         }
-        return users.get(user.getId());
+        return users.get(id);
     }
 
     public void remove(long id) {
@@ -72,7 +70,7 @@ public class UserRepository {
     }
 
     private void checkEmail(User user) {
-        if (emails.containsKey(user.getEmail())) {
+        if (emails.contains(user.getEmail())) {
             log.warn("Email {} Уже занят", user.getEmail());
             throw new EmailDuplicateException("Email " + user.getEmail() + " уже занят");
         }

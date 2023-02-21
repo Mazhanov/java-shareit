@@ -3,8 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemUpdateDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserService;
 
@@ -14,26 +13,27 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    ItemRepository itemRepository;
-    UserService userService;
+    private ItemRepository itemRepository;
+    private UserService userService;
 
     @Override
-    public Item create(ItemCreateDto dto, long userId) {
+    public Item create(ItemDto dto, long userId) {
         User user = userService.getById(userId);
-        Item newItem = ItemMapper.toItemCreate(dto);
+        Item newItem = ItemMapper.toItem(dto);
         return itemRepository.create(newItem, user);
     }
 
     @Override
-    public Item update(ItemUpdateDto dto, long userId, long itemId) {
+    public Item update(ItemDto dto, long userId, long itemId) {
         checkPresenceItem(itemId);
+        User user = userService.getById(userId);
 
         if (getById(itemId).getOwner().getId() != userId) {
             log.warn("У пользователя с id={} нет прав на изменение вещи", userId);
             throw new OtherUserException("У пользователя с id=" + userId + " нет прав на изменение вещи");
         }
 
-        Item item = ItemMapper.toItemUpdate(dto);
+        Item item = ItemMapper.toItem(dto);
         return itemRepository.update(item, itemId);
     }
 

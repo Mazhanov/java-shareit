@@ -1,22 +1,17 @@
 package ru.practicum.shareit.user;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserUpdateDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@Slf4j
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public User getById(long id) {
@@ -29,15 +24,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(UserCreateDto dto) {
-        User newUser = UserMapper.toUserCreate(dto);
+    public User create(UserDto dto) {
+        User newUser = UserMapper.toUser(dto);
         return userRepository.create(newUser);
     }
 
     @Override
-    public User update(UserUpdateDto dto, long id) {
-        User newUser = UserMapper.toUserUpdate(dto, id);
-        return userRepository.update(newUser);
+    public User update(UserDto dto, long id) {
+        User newUser = UserMapper.toUser(dto);
+        return userRepository.update(newUser, id);
     }
 
     @Override

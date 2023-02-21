@@ -2,11 +2,12 @@ package ru.practicum.shareit.item;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemUpdateDto;
+import ru.practicum.shareit.Create;
+import ru.practicum.shareit.Update;
+import ru.practicum.shareit.item.dto.ItemDto;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -14,17 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class ItemController {
-    ItemService itemService;
+    private ItemService itemService;
 
     @PostMapping
-    public Item create(@Valid @RequestBody ItemCreateDto dto, @RequestHeader(name = "X-Sharer-User-Id") long userId) {
+    public Item create(@Validated({Create.class}) @RequestBody ItemDto dto, @RequestHeader(name = "X-Sharer-User-Id") long userId) {
         Item item = itemService.create(dto, userId);
         log.info("Добавлена новая вещь {}", item);
         return item;
     }
 
     @PatchMapping("/{id}")
-    public Item update(@Valid @RequestBody ItemUpdateDto dto,
+    public Item update(@Validated({Update.class}) @RequestBody ItemDto dto,
                        @RequestHeader(name = "X-Sharer-User-Id") long userId,
                        @PathVariable long id) {
         Item item = itemService.update(dto, userId, id);

@@ -1,14 +1,13 @@
 package ru.practicum.shareit.user;
 
-import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserUpdateDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 public class UserMapper {
-    public static User toUserCreate(UserCreateDto dto) {
+    public static User toUser(UserDto dto) {
         return new User(dto.getName(), dto.getEmail());
     }
 
-    public static User toUserUpdate(UserUpdateDto dto, long id) {
-        return new User(id, dto.getName(), dto.getEmail());
+    public static UserDto toUserDto(User user) {
+        return new UserDto(user.getName(), user.getEmail());
     }
 }
