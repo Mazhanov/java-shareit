@@ -44,15 +44,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getByUserId(long userId) {
-        return itemRepository.getByUserId(userId).
-                stream().map(ItemMapper::toItemDto)
+        return itemRepository.getByUserId(userId).stream()
+                .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDto> search(String text) {
-        return itemRepository.search(text).
-                stream().map(ItemMapper::toItemDto)
+        return itemRepository.search(text).stream()
+                .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
 
