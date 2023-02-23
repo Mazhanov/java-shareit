@@ -9,8 +9,8 @@ import java.util.*;
 @Component
 @Slf4j
 public class UserRepository {
-    private Map<Long, User> users = new HashMap<>();
-    private Set<String> emails = new HashSet<>();
+    private final Map<Long, User> users = new HashMap<>();
+    private final Set<String> emails = new HashSet<>();
     private long userId = 0;
 
     public User getById(long id) {

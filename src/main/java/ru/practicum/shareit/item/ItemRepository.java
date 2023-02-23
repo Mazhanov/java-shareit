@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class ItemRepository {
-    private Map<Long, Item> items = new HashMap<>();
+    private final Map<Long, Item> items = new HashMap<>();
     private long itemId = 0;
 
     public Item create(Item item, User user) {

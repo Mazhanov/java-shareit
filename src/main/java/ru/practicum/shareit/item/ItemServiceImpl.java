@@ -5,28 +5,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.user.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Override
-    public Item create(ItemDto dto, long userId) {
-        User user = userService.getById(userId);
+    public ItemDto create(ItemDto dto, long userId) {
+        User user = userRepository.getById(userId);
         Item newItem = ItemMapper.toItem(dto);
-        return itemRepository.create(newItem, user);
+        return ItemMapper.toItemDto(itemRepository.create(newItem, user));
     }
 
     @Override
-    public Item update(ItemDto dto, long userId, long itemId) {
+    public ItemDto update(ItemDto dto, long userId, long itemId) {
         checkPresenceItem(itemId);
-        User user = userService.getById(userId);
 
         if (getById(itemId).getOwner().getId() != userId) {
             log.warn("У пользователя с id={} нет прав на изменение вещи", userId);
@@ -34,22 +34,26 @@ public class ItemServiceImpl implements ItemService {
         }
 
         Item item = ItemMapper.toItem(dto);
-        return itemRepository.update(item, itemId);
+        return ItemMapper.toItemDto(itemRepository.update(item, itemId));
     }
 
     @Override
-    public Item getById(long id) {
-        return itemRepository.getById(id);
+    public ItemDto getById(long id) {
+        return ItemMapper.toItemDto(itemRepository.getById(id));
     }
 
     @Override
-    public List<Item> getByUserId(long userId) {
-        return itemRepository.getByUserId(userId);
+    public List<ItemDto> getByUserId(long userId) {
+        return itemRepository.getByUserId(userId).
+                stream().map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Item> search(String text) {
-        return itemRepository.search(text);
+    public List<ItemDto> search(String text) {
+        return itemRepository.search(text).
+                stream().map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     private void checkPresenceItem(long itemId) {

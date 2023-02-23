@@ -18,29 +18,29 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAll() {
-        List<User> users = userService.getAll();
+    public List<UserDto> getAll() {
+        List<UserDto> users = userService.getAll();
         log.info("Возвращен список пользователей {}", users);
         return users;
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable long id) {
-        User user = userService.getById(id);
+    public UserDto getById(@PathVariable long id) {
+        UserDto user = userService.getById(id);
         log.info("Возвращен пользователь {}", user);
         return user;
     }
 
     @PostMapping
-    public User create(@Validated({Create.class}) @RequestBody UserDto dto) {
-        User user = userService.create(dto);
+    public UserDto create(@Validated({Create.class}) @RequestBody UserDto dto) {
+        UserDto user = userService.create(dto);
         log.info("Создан пользователь {}", user);
         return user;
     }
 
     @PatchMapping("/{id}")
-    public User update(@Validated({Update.class}) @RequestBody UserDto dto, @PathVariable long id) {
-        User user = userService.update(dto, id);
+    public UserDto update(@Validated({Update.class}) @RequestBody UserDto dto, @PathVariable long id) {
+        UserDto user = userService.update(dto, id);
         log.info("Обновлен пользователь {}", user);
         return user;
     }

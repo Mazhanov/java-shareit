@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 public class UserDto {
+    private Long id;
+
     @NotBlank(groups = {Create.class},message = "name cannot be missing")
     private String name;
 

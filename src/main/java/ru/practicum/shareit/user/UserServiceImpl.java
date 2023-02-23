@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -14,25 +15,27 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User getById(long id) {
-        return userRepository.getById(id);
+    public UserDto getById(long id) {
+        return UserMapper.toUserDto(userRepository.getById(id));
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.getAll();
+    public List<UserDto> getAll() {
+        return userRepository.getAll().stream()
+                .map(UserMapper::toUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public User create(UserDto dto) {
+    public UserDto create(UserDto dto) {
         User newUser = UserMapper.toUser(dto);
-        return userRepository.create(newUser);
+        return UserMapper.toUserDto(userRepository.create(newUser));
     }
 
     @Override
-    public User update(UserDto dto, long id) {
+    public UserDto update(UserDto dto, long id) {
         User newUser = UserMapper.toUser(dto);
-        return userRepository.update(newUser, id);
+        return UserMapper.toUserDto(userRepository.update(newUser, id));
     }
 
     @Override
