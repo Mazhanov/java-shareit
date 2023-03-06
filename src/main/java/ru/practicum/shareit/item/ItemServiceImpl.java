@@ -143,6 +143,7 @@ public class ItemServiceImpl implements ItemService {
 
         return itemDto;
     }
+
     private ItemDto addComments(ItemDto itemDto) {
         List<CommentDto> commentsDto = commentRepository.findAllByItemIdOrderByIdAsc(itemDto.getId())
                 .stream()
