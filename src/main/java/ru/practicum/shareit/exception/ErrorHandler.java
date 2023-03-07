@@ -6,48 +6,67 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.item.OtherUserException;
-import ru.practicum.shareit.user.EmailDuplicateException;
+import ru.practicum.shareit.booking.ItemUnavailableException;
+import ru.practicum.shareit.booking.UnsupportedStatusException;
+
+import javax.validation.ValidationException;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleObjectNotFoundException(final ObjectNotFoundException exception) {
-        log.info("Exception ObjectNotFoundException {}", exception.getMessage(), exception);
+        log.error("Exception ObjectNotFoundException {}", exception.getMessage(), exception);
         return new ErrorResponse(
                 exception.getMessage()
         );
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleEmailDuplicateException(final EmailDuplicateException exception) {
-        log.info("Exception EmailDuplicateException {}", exception.getMessage(), exception);
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleOtherUserException(final AccessDeniedException exception) {
+        log.error("Exception AccessDeniedException {}", exception.getMessage(), exception);
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleOtherUserException(final OtherUserException exception) {
-        log.info("Exception OtherUserException {}", exception.getMessage(), exception);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleItemUnavailableException(final ItemUnavailableException exception) {
+        log.error("Exception ItemUnavailableException {}", exception.getMessage(), exception);
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
-        log.info("Exception handleExceptionBadRequest");
+        log.error("Exception handleExceptionBadRequest {}", exception.getMessage(), exception);
         return new ErrorResponse(
                 exception.getMessage()
         );
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidationException(final ValidationException exception) {
+        log.error("Exception ValidationException {}", exception.getMessage(), exception);
+        return new ErrorResponse(
+                exception.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    public Map<String, String> handleUnsupportedStatusException(UnsupportedStatusException exception) {
+        log.error("Exception UnsupportedStatusException", exception);
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(final Exception exception) {
-        log.info("500 {}", exception.getMessage(), exception);
+        log.error("500 {}", exception.getMessage(), exception);
         return new ErrorResponse(exception.getMessage());
     }
 }

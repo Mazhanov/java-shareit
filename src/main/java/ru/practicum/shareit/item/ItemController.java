@@ -6,8 +6,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,8 +36,8 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemDto getById(@PathVariable long id) {
-        ItemDto item = itemService.getById(id);
+    public ItemDto getById(@PathVariable long id, @RequestHeader(name = "X-Sharer-User-Id") long userId) {
+        ItemDto item = itemService.getById(id, userId);
         log.info("Возвращена вещь {}", item);
         return item;
     }
@@ -52,5 +54,13 @@ public class ItemController {
         List<ItemDto> items = itemService.search(text);
         log.info("Возвращен список вещей по запросу {}, {}", text, items);
         return items;
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@RequestHeader(name = "X-Sharer-User-Id") long userId, @PathVariable long itemId,
+                                    @RequestBody CommentDto commentDto) {
+        CommentDto comment = itemService.createComment(userId, itemId, commentDto, LocalDateTime.now());
+        log.info("Добавлен коммент к вещи {}, {}", itemId, comment);
+        return comment;
     }
 }
