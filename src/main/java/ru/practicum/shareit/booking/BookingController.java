@@ -7,6 +7,7 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/bookings")
@@ -43,7 +44,8 @@ public class BookingController {
     @GetMapping
     List<BookingDto> getAllByBooker(@RequestHeader(name = "X-Sharer-User-Id") long userId,
                                     @RequestParam(defaultValue = "ALL") String state) {
-        List<BookingDto> bookingsByBooker = bookingService.getAllByBooker(userId, state);
+        List<BookingDto> bookingsByBooker =
+                bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state));
         log.info("Получен список бронирований пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }
@@ -51,7 +53,8 @@ public class BookingController {
     @GetMapping("/owner")
     List<BookingDto> getAllByOwner(@RequestHeader(name = "X-Sharer-User-Id") long userId,
                                     @RequestParam(defaultValue = "ALL") String state) {
-        List<BookingDto> bookingsByBooker = bookingService.getAllByOwner(userId, state);
+        List<BookingDto> bookingsByBooker =
+                bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state));
         log.info("Получен список бронирований для вещей пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }

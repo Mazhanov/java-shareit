@@ -84,37 +84,37 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public List<BookingDto> getAllByBooker(long userId, String state) {
+    public List<BookingDto> getAllByBooker(long userId, BookingState state) {
         findUserByIdAndCheck(userId);
 
-        List<Booking> bookerBookings = new ArrayList<>();
+        List<Booking> bookerBookings;
 
         switch (state) {
-            case "ALL":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdOrderByStartDesc(userId));
+            case All:
+                bookerBookings = (bookingRepository.findAllByBookerIdOrderByStartDesc(userId));
                 break;
-            case "CURRENT":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
+            case CURRENT:
+                bookerBookings = (bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
                                 LocalDateTime.now(), LocalDateTime.now()));
                 break;
-            case "PAST":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId,
+            case PAST:
+                bookerBookings = (bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId,
                         LocalDateTime.now()));
                 break;
-            case "FUTURE":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId,
+            case FUTURE:
+                bookerBookings = (bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId,
                         LocalDateTime.now()));
                 break;
-            case "WAITING":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(userId,
+            case WAITING:
+                bookerBookings = (bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.WAITING));
                 break;
-            case "REJECTED":
-                bookerBookings.addAll(bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(userId,
+            case REJECTED:
+                bookerBookings = (bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED));
                 break;
             default:
-                throw new UnsupportedStatusException();
+                return new ArrayList<>();
         }
 
         return bookerBookings.stream()
@@ -122,36 +122,36 @@ public class BookingServiceImpl implements BookingService {
                 .collect(Collectors.toList());
     }
 
-    public List<BookingDto> getAllByOwner(long userId, String state) {
+    public List<BookingDto> getAllByOwner(long userId, BookingState state) {
         findUserByIdAndCheck(userId);
 
-        List<Booking> ownerBookings = new ArrayList<>();
+        List<Booking> ownerBookings;
         switch (state) {
-            case "ALL":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId));
+            case All:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId));
                 break;
-            case "CURRENT":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
+            case CURRENT:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
                                 LocalDateTime.now(), LocalDateTime.now()));
                 break;
-            case "PAST":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(userId,
+            case PAST:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(userId,
                         LocalDateTime.now()));
                 break;
-            case "FUTURE":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdAndStartAfterOrderByStartDesc(userId,
+            case FUTURE:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdAndStartAfterOrderByStartDesc(userId,
                         LocalDateTime.now()));
                 break;
-            case "WAITING":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(userId,
+            case WAITING:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.WAITING));
                 break;
-            case "REJECTED":
-                ownerBookings.addAll(bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(userId,
+            case REJECTED:
+                ownerBookings = (bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED));
                 break;
             default:
-                throw new UnsupportedStatusException();
+                return new ArrayList<>();
         }
 
         return ownerBookings.stream()

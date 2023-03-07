@@ -17,10 +17,10 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, name = "email")
     private String email;
 
     public User(String name, String email) {
