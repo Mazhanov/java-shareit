@@ -195,6 +195,7 @@ class ItemControllerTest {
     private ItemDto makeItemDto() {
         return new ItemDto(null, "name", "description", false, null);
     }
+
     private ItemDto makeItemDtoWithId(long id) {
         return new ItemDto(id, "name", "description", false, null);
     }

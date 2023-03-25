@@ -11,6 +11,6 @@ public class PageableCreate {
             throw new ValidationException("incorrect parametrs for pages");
         }
 
-        return PageRequest.of((from/size), size);
+        return PageRequest.of((from / size), size);
     }
 }

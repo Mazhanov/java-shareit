@@ -115,7 +115,7 @@ class ItemRequestControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(requestDto)));
     }
 
-    private ItemRequestDto makeItemRequestDto(long id){
+    private ItemRequestDto makeItemRequestDto(long id) {
         return new ItemRequestDto(id, "description", LocalDateTime.now(), List.of());
     }
 

@@ -84,7 +84,7 @@ class UserServiceTest {
 
     @Test
     void updateEmailTest() {
-        UserDto userDto = new UserDto( null, null, "updateEmail");
+        UserDto userDto = new UserDto(null, null, "updateEmail");
         User user = makeUser(1);
         User updateUser = new User(1L, "testName", "updateEmail");
         when(userRepository.save(any()))
@@ -97,7 +97,7 @@ class UserServiceTest {
 
     @Test
     void updateNameTest() {
-        UserDto userDto = new UserDto( null, "updateName", null);
+        UserDto userDto = new UserDto(null, "updateName", null);
         User user = makeUser(1);
         User updateUser = new User(1L, "updateName", "testEmail");
         when(userRepository.save(any()))

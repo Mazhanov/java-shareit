@@ -13,9 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
-import ru.practicum.shareit.item.ItemController;
-import ru.practicum.shareit.item.ItemService;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
@@ -24,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -153,21 +149,21 @@ class BookingControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(bookings)));
     }
 
-    private CreateBookingDto makeCreateBookingDto(){
+    private CreateBookingDto makeCreateBookingDto() {
         return new CreateBookingDto(null, LocalDateTime.MIN, LocalDateTime.MAX,
                 1L, 1L, BookingStatus.WAITING);
     }
 
-    private BookingDto makeBookingDto(long id){
+    private BookingDto makeBookingDto(long id) {
         return new BookingDto(id, LocalDateTime.MIN, LocalDateTime.MAX,
                 null, null, BookingStatus.WAITING);
     }
 
-    private Item makeItem(long id){
+    private Item makeItem(long id) {
         return new Item(id, "name", "description", false, null, 1L);
     }
 
-    private User makeUser(long id){
+    private User makeUser(long id) {
         return new User(id, "name", "email@email.ru");
     }
 }

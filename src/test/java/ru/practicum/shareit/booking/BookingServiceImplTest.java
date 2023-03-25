@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.PageableCreate;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -458,21 +457,21 @@ class BookingServiceImplTest {
                 BookingState.REJECTED, PageableCreate.pageableCreate(1, 10)), bookingsDto);
     }
 
-    private CreateBookingDto makeCreateBookingDto(){
+    private CreateBookingDto makeCreateBookingDto() {
         return new CreateBookingDto(null, LocalDateTime.now().plusDays(100), LocalDateTime.MAX,
                 1L, 1L, BookingStatus.WAITING);
     }
 
-    private Booking makeBooking(long id){
+    private Booking makeBooking(long id) {
         return new Booking(id, LocalDateTime.now().plusDays(100), LocalDateTime.MAX,null, null,
                 BookingStatus.WAITING);
     }
 
-    private Item makeItem(long id){
+    private Item makeItem(long id) {
         return new Item(id, "name", "description", false, null, 1L);
     }
 
-    private User makeUser(long id){
+    private User makeUser(long id) {
         return new User(id, "name", "email@email.ru");
     }
 }

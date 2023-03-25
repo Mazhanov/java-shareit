@@ -95,8 +95,8 @@ class ItemServiceTest {
         ItemDto createItemDto = new ItemDto(null, "name", "description", false, null);
         createItemDto.setRequestId(1L);
         User user = new User(1L, "name", "email@email.ru");
-        ItemDto ItemDto = new ItemDto(1L, "name", "description", false, user);
-        ItemDto.setRequestId(1L);
+        ItemDto itemDto = new ItemDto(1L, "name", "description", false, user);
+        itemDto.setRequestId(1L);
         Item item = getItem(1L);
 
         when(userRepository.findById(anyLong()))
@@ -104,7 +104,7 @@ class ItemServiceTest {
         when(itemRepository.save(any()))
                 .thenReturn(item);
 
-        Assertions.assertEquals(itemService.create(createItemDto, 1L), ItemDto);
+        Assertions.assertEquals(itemService.create(createItemDto, 1L), itemDto);
     }
 
     @Test

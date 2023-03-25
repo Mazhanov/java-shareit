@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class RequestServiceImpl implements RequestService{
+public class RequestServiceImpl implements RequestService {
     private RequestRepository requestRepository;
     private UserRepository userRepository;
     private ItemRepository itemRepository;

@@ -7,10 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.PageableCreate;
-import ru.practicum.shareit.booking.BookingMapper;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.CreateBookingDto;
-import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
@@ -22,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -115,19 +110,19 @@ class RequestServiceImplTest {
         Assertions.assertEquals(requestService.getById(1L, 1L), itemRequestDto);
     }
 
-    private ItemRequest makeItemRequest(long id){
+    private ItemRequest makeItemRequest(long id) {
         return new ItemRequest(id, "description", makeUser(1L), LocalDateTime.MIN);
     }
 
-    private ItemRequestDto makeItemRequestDto(long id){
+    private ItemRequestDto makeItemRequestDto(long id) {
         return new ItemRequestDto(id, "description", LocalDateTime.MIN, List.of());
     }
 
-    private Item makeItem(long id){
+    private Item makeItem(long id) {
         return new Item(id, "name", "description", false, null, 1L);
     }
 
-    private User makeUser(long id){
+    private User makeUser(long id) {
         return new User(id, "name", "email@email.ru");
     }
 }
