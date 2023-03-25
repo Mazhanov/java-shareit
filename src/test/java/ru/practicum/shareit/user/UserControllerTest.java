@@ -134,7 +134,7 @@ class UserControllerTest {
     private UserDto makeUserDto() {
         return new UserDto(null, "testName", "testEmail@email.ru");
     }
-    
+
     private UserDto makeUserDtoWithId(long id) {
         return new UserDto(id, "testName", "testEmail@email.ru");
     }
