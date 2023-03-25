@@ -127,14 +127,36 @@ class ItemServiceTest {
     }
 
     @Test
-    void updateTest() {
-        ItemDto updateItemDto = new ItemDto(1L, "testName", "description", false, null);
+    void updateTest_name() {
+        ItemDto updateItemDto = new ItemDto(1L, "testName", null, null, null);
         Item item = getItem(1L);
         User user = new User(1L, "name", "email@email.ru");
         item.setName("testName");
 
         ItemDto itemDto = getItemDto(1L);
         itemDto.setName("testName");
+        itemDto.setComments(null);
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(itemRepository.findById(anyLong()))
+                .thenReturn(Optional.of(item));
+        when(itemRepository.save(any()))
+                .thenReturn(item);
+
+        Assertions.assertEquals(itemService.update(updateItemDto, 1L, 1L), itemDto);
+    }
+
+    @Test
+    void updateTest_descriptionAndAvailable() {
+        ItemDto updateItemDto = new ItemDto(1L, null, "descriptionTest", false, null);
+        updateItemDto.setAvailable(true);
+        Item item = getItem(1L);
+        User user = new User(1L, "name", "email@email.ru");
+
+        ItemDto itemDto = getItemDto(1L);
+        itemDto.setDescription("descriptionTest");
+        itemDto.setAvailable(true);
         itemDto.setComments(null);
 
         when(userRepository.findById(anyLong()))

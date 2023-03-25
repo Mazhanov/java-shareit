@@ -74,6 +74,22 @@ class RequestServiceImplTest {
         Assertions.assertEquals(requestService.getAllOwn(1L), requestOwn);
     }
 
+
+    @Test
+    void getAllOwnTest_EmptyList() {
+        User user = makeUser(1L);
+
+        List<ItemRequest> requests = List.of();
+        List<ItemRequestDto> requestOwn = List.of();
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(requestRepository.findAllByRequestorIdOrderByCreatedDesc(anyLong()))
+                .thenReturn(requests);
+
+        Assertions.assertEquals(requestService.getAllOwn(1L), requestOwn);
+    }
+
     @Test
     void getAllRequestOtherUsersTest() {
         User user = makeUser(1L);
@@ -90,6 +106,22 @@ class RequestServiceImplTest {
                 .thenReturn(List.of(makeItem(1L)));
 
         Assertions.assertEquals(requestService.getAllRequestOtherUsers(1L, PageableCreate.pageableCreate(1, 10)), requestOwn);
+    }
+
+    @Test
+    void getAllRequestOtherUsersTest_EmptyList() {
+        User user = makeUser(1L);
+
+        List<ItemRequest> requests = List.of();
+        List<ItemRequestDto> requestOwn = List.of();
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(requestRepository.findAllByRequestorIdNotOrderByCreatedDesc(anyLong(), any()))
+                .thenReturn(requests);
+
+        Assertions.assertEquals(requestService.getAllRequestOtherUsers(1L,
+                PageableCreate.pageableCreate(1, 10)), requestOwn);
     }
 
     @Test

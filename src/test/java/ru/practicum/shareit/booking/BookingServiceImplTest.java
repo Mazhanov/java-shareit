@@ -80,14 +80,79 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBookingTest_ExceptionStartOrEnd() {
+    void createBookingTest_startAfterEnd() {
         CreateBookingDto createBookingDto = makeCreateBookingDto();
         Item item = makeItem(1L);
         item.setAvailable(true);
         item.setOwner(makeUser(100L));
         User user = makeUser(1L);
-        createBookingDto.setEnd(LocalDateTime.MIN);
+        createBookingDto.setEnd(LocalDateTime.now().plusDays(2));
         createBookingDto.setStart(LocalDateTime.MAX);
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(itemRepository.findById(anyLong()))
+                .thenReturn(Optional.of(item));
+
+        final ValidationException exception = Assertions.assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(createBookingDto, 1L));
+
+        Assertions.assertEquals("Ошибка валидации даты старта или финиша", exception.getMessage());
+    }
+
+    @Test
+    void createBookingTest_startBeforeNow() {
+        CreateBookingDto createBookingDto = makeCreateBookingDto();
+        Item item = makeItem(1L);
+        item.setAvailable(true);
+        item.setOwner(makeUser(100L));
+        User user = makeUser(1L);
+        createBookingDto.setStart(LocalDateTime.now().minusDays(2));
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(itemRepository.findById(anyLong()))
+                .thenReturn(Optional.of(item));
+
+        final ValidationException exception = Assertions.assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(createBookingDto, 1L));
+
+        Assertions.assertEquals("Ошибка валидации даты старта или финиша", exception.getMessage());
+    }
+
+    @Test
+    void createBookingTest_endBeforeNow() {
+        CreateBookingDto createBookingDto = makeCreateBookingDto();
+        Item item = makeItem(1L);
+        item.setAvailable(true);
+        item.setOwner(makeUser(100L));
+        User user = makeUser(1L);
+        createBookingDto.setEnd(LocalDateTime.now().minusDays(2));
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(user));
+        when(itemRepository.findById(anyLong()))
+                .thenReturn(Optional.of(item));
+
+        final ValidationException exception = Assertions.assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(createBookingDto, 1L));
+
+        Assertions.assertEquals("Ошибка валидации даты старта или финиша", exception.getMessage());
+    }
+
+    @Test
+    void createBookingTest_startEqualEnd() {
+        CreateBookingDto createBookingDto = makeCreateBookingDto();
+        Item item = makeItem(1L);
+        item.setAvailable(true);
+        item.setOwner(makeUser(100L));
+        User user = makeUser(1L);
+        LocalDateTime date = LocalDateTime.now().plusDays(2);
+        createBookingDto.setEnd(date);
+        createBookingDto.setStart(date);
 
         when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.of(user));
@@ -144,13 +209,32 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void changeStatusBookingTest_incorrectStatus() {
+    void changeStatusBookingTest_incorrectStatusRejected() {
         Booking booking = makeBooking(1L);
         Item item = makeItem(1L);
         item.setAvailable(true);
         item.setOwner(makeUser(1L));
         booking.setItem(item);
         booking.setStatus(BookingStatus.REJECTED);
+
+        when(bookingRepository.findById(anyLong()))
+                .thenReturn(Optional.of(booking));
+
+        final ValidationException exception = Assertions.assertThrows(
+                ValidationException.class,
+                () -> bookingService.changeStatusBooking(1L, 1L, true));
+
+        Assertions.assertEquals("Невозможно изменить статус бронирования 1", exception.getMessage());
+    }
+
+    @Test
+    void changeStatusBookingTest_incorrectStatusApproved() {
+        Booking booking = makeBooking(1L);
+        Item item = makeItem(1L);
+        item.setAvailable(true);
+        item.setOwner(makeUser(1L));
+        booking.setItem(item);
+        booking.setStatus(BookingStatus.APPROVED);
 
         when(bookingRepository.findById(anyLong()))
                 .thenReturn(Optional.of(booking));
@@ -251,13 +335,28 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingTest() {
+    void getBookingTest_byOwner() {
         Booking booking = makeBooking(1L);
         Item item = makeItem(1L);
         item.setAvailable(true);
         item.setOwner(makeUser(1L));
         booking.setItem(item);
         booking.setBooker(makeUser(2L));
+
+        when(bookingRepository.findById(anyLong()))
+                .thenReturn(Optional.of(booking));
+
+        Assertions.assertEquals(bookingService.getBooking(1L, 1L), BookingMapper.toBookingDto(booking));
+    }
+
+    @Test
+    void getBookingTest_byBooker() {
+        Booking booking = makeBooking(1L);
+        Item item = makeItem(1L);
+        item.setAvailable(true);
+        item.setOwner(makeUser(2L));
+        booking.setItem(item);
+        booking.setBooker(makeUser(1L));
 
         when(bookingRepository.findById(anyLong()))
                 .thenReturn(Optional.of(booking));
