@@ -3,9 +3,11 @@ package ru.practicum.shareit.booking;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.PageableCreate;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,7 +18,7 @@ public class BookingController {
     private BookingService bookingService;
 
     @PostMapping
-    public BookingDto createBooking(@RequestBody CreateBookingDto dto,
+    public BookingDto createBooking(@Valid @RequestBody CreateBookingDto dto,
                                     @RequestHeader(name = "X-Sharer-User-Id") long userId) {
         BookingDto booking = bookingService.createBooking(dto, userId);
         log.info("Добавлено новое бронирование {}", booking);
@@ -42,18 +44,24 @@ public class BookingController {
 
     @GetMapping
     List<BookingDto> getAllByBooker(@RequestHeader(name = "X-Sharer-User-Id") long userId,
-                                    @RequestParam(defaultValue = "ALL") String state) {
+                                    @RequestParam(defaultValue = "ALL") String state,
+                                    @RequestParam(name = "from", defaultValue = "0") int from,
+                                    @RequestParam(name = "size", defaultValue = "10") int size) {
         List<BookingDto> bookingsByBooker =
-                bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state));
+                bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state),
+                        PageableCreate.pageableCreate(from, size));
         log.info("Получен список бронирований пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }
 
     @GetMapping("/owner")
     List<BookingDto> getAllByOwner(@RequestHeader(name = "X-Sharer-User-Id") long userId,
-                                    @RequestParam(defaultValue = "ALL") String state) {
+                                   @RequestParam(defaultValue = "ALL") String state,
+                                   @RequestParam(name = "from", defaultValue = "0") int from,
+                                   @RequestParam(name = "size", defaultValue = "10") int size) {
         List<BookingDto> bookingsByBooker =
-                bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state));
+                bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state),
+                        PageableCreate.pageableCreate(from, size));
         log.info("Получен список бронирований для вещей пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }

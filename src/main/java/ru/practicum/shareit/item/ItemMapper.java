@@ -17,12 +17,21 @@ public class ItemMapper {
         if (dto.getAvailable() != null) {
             item.setAvailable(dto.getAvailable());
         }
+        if (dto.getRequestId() != null) {
+            item.setRequestId(dto.getRequestId());
+        }
         return item;
     }
 
     public static ItemDto toItemDto(Item item) {
-        return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getAvailable(),
-                item.getOwner(), item.getRequest());
+        ItemDto itemDto = new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getAvailable(),
+                item.getOwner());
+
+        if (item.getRequestId() != null) {
+            itemDto.setRequestId(item.getRequestId());
+        }
+
+        return itemDto;
     }
 
     public static Comment toComment(CommentDto commentDto) {

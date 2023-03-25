@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -75,8 +76,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getByUserId(long userId) {
-        return itemRepository.findAllByOwnerIdOrderByIdAsc(userId).stream()
+    public List<ItemDto> getByUserId(long userId, Pageable pageable) {
+        return itemRepository.findAllByOwnerIdOrderByIdAsc(userId, pageable).stream()
                 .map(ItemMapper::toItemDto)
                 .map(this::getItemWithBooking)
                 .map(this::addComments)
@@ -84,12 +85,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String text) {
+    public List<ItemDto> search(String text, Pageable pageable) {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
 
-        return itemRepository.search(text).stream()
+        return itemRepository.search(text, pageable).stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
