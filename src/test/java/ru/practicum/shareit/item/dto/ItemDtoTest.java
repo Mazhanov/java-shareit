@@ -19,7 +19,7 @@ class ItemDtoTest {
     ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    void ItemRequestDtoTest() throws Exception {
+    void itemRequestDtoTest() throws Exception {
         User user = new User(1L, "name", "email@email.ru");
         List<CommentDto> comments = List.of();
         ItemDto itemDto = new ItemDto(1L, "name", "description", false, user);

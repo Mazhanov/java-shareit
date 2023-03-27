@@ -10,7 +10,6 @@ import ru.practicum.shareit.booking.dto.CreateBookingDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

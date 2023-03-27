@@ -22,7 +22,7 @@ class ItemRequestDtoTest {
     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Test
-    void ItemRequestDtoTest() throws Exception {
+    void itemRequestDtoTest() throws Exception {
         List<ItemDto> items = List.of(new ItemDto(1L, "name", "description", false, null),
                 new ItemDto(2L, "name2", "description2", true, null));
         ItemRequestDto itemRequestDto = new ItemRequestDto(1L, "description", LocalDateTime.MIN, items);
