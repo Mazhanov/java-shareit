@@ -151,7 +151,7 @@ class RequestServiceImplTest {
     }
 
     private Item makeItem(long id) {
-        return new Item(id, "name", "description", false, null, 1L);
+        return new Item(id, "name", "description", false, null, null);
     }
 
     private User makeUser(long id) {

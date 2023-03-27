@@ -10,6 +10,9 @@ import ru.practicum.shareit.Update;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 @RequestMapping("/items")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class ItemController {
     private ItemService itemService;
 
@@ -45,8 +49,8 @@ public class ItemController {
 
     @GetMapping
     public List<ItemDto> getByUserId(@RequestHeader(name = "X-Sharer-User-Id") long userId,
-                                     @RequestParam(name = "from", defaultValue = "0") int from,
-                                     @RequestParam(name = "size", defaultValue = "10") int size) {
+                                     @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
+                                     @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<ItemDto> items = itemService.getByUserId(userId, PageableCreate.pageableCreate(from, size));
         log.info("Возвращен список вещей пользователя id={}, {}", userId, items);
         return items;
@@ -54,8 +58,8 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> search(@RequestParam String text,
-                                @RequestParam(name = "from", defaultValue = "0") int from,
-                                @RequestParam(name = "size", defaultValue = "10") int size) {
+                                @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
+                                @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<ItemDto> items = itemService.search(text, PageableCreate.pageableCreate(from, size));
         log.info("Возвращен список вещей по запросу {}, {}", text, items);
         return items;

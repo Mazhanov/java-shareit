@@ -56,7 +56,8 @@ class BookingServiceImplTest {
                 ItemUnavailableException.class,
                 () -> bookingService.createBooking(createBookingDto, 1L));
 
-        Assertions.assertEquals("Вещь Item(id=1, name=name, description=description, available=false, owner=null, requestId=1) занята", exception.getMessage());
+        Assertions.assertEquals("Вещь Item(id=1, name=name, description=description, " +
+                "available=false, owner=null, request=null) занята", exception.getMessage());
     }
 
     @Test
@@ -204,7 +205,7 @@ class BookingServiceImplTest {
                 () -> bookingService.changeStatusBooking(1L, 1L, true));
 
         Assertions.assertEquals("Вещь Item(id=1, name=name, description=description, available=true, " +
-                "owner=User(id=100, name=name, email=email@email.ru), requestId=1) " +
+                "owner=User(id=100, name=name, email=email@email.ru), request=null) " +
                 "не пренадлежит пользователю 1", exception.getMessage());
     }
 
@@ -567,7 +568,7 @@ class BookingServiceImplTest {
     }
 
     private Item makeItem(long id) {
-        return new Item(id, "name", "description", false, null, 1L);
+        return new Item(id, "name", "description", false, null, null);
     }
 
     private User makeUser(long id) {

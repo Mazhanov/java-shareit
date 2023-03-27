@@ -18,7 +18,7 @@ import java.util.List;
 
 @Transactional
 @SpringBootTest
-@AutoConfigureTestDatabase
+@AutoConfigureTestDatabase()
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class ItemServiceImplIntegrationTest {
     private final EntityManager em;
@@ -27,7 +27,7 @@ class ItemServiceImplIntegrationTest {
 
     /*@Test
     void createTest() {
-        UserDto user = makeUserDto();
+        UserDto user = new UserDto(1L, "testName", "email@mail.ru");
         UserDto newUser = userService.create(user);
 
         ItemDto itemDto = makeItemDto("item1");
@@ -43,7 +43,7 @@ class ItemServiceImplIntegrationTest {
 
     @Test
     void searchTest() {
-        UserDto user = makeUserDto();
+        UserDto user = new UserDto(1L, "testName", "email@mail.ru");
         UserDto newUser = userService.create(user);
 
         ItemDto itemDto = makeItemDto("отвертка");
@@ -61,9 +61,5 @@ class ItemServiceImplIntegrationTest {
 
     private ItemDto makeItemDto(String name) {
         return new ItemDto(null, name, "description", false, null);
-    }
-
-    private UserDto makeUserDto() {
-        return new UserDto(null, "testName", "email@mail.ru");
     }
 }

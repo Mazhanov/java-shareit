@@ -14,6 +14,9 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.RequestRepository;
+import ru.practicum.shareit.request.RequestService;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -32,10 +35,17 @@ public class ItemServiceImpl implements ItemService {
     private BookingRepository bookingRepository;
     private CommentRepository commentRepository;
 
+    private RequestRepository requestRepository;
+
     @Override
     public ItemDto create(ItemDto dto, long userId) {
         User user = findUserByIdAndCheck(userId);
         Item newItem = ItemMapper.toItem(dto);
+
+        if (dto.getRequestId() != null) {
+            newItem.setRequest(findItemRequestByIdAndCheck(dto.getRequestId()));
+        }
+
         newItem.setOwner(user);
         return ItemMapper.toItemDto(itemRepository.save(newItem));
     }
@@ -125,6 +135,11 @@ public class ItemServiceImpl implements ItemService {
     private User findUserByIdAndCheck(long id) { // Возвращает юзера по ID и проверяет наличие в БД
         return userRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Пользователь с id" + id + " не найден"));
+    }
+
+    private ItemRequest findItemRequestByIdAndCheck(long id) { // Возвращает бронь по ID и проверяет наличие в БД
+        return requestRepository.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException("Брони с id" + id + " не найдено"));
     }
 
     private ItemDto getItemWithBooking(ItemDto itemDto) {

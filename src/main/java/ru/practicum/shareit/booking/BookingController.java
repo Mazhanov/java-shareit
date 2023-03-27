@@ -2,18 +2,22 @@ package ru.practicum.shareit.booking;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.PageableCreate;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class BookingController {
     private BookingService bookingService;
 
@@ -45,8 +49,8 @@ public class BookingController {
     @GetMapping
     List<BookingDto> getAllByBooker(@RequestHeader(name = "X-Sharer-User-Id") long userId,
                                     @RequestParam(defaultValue = "ALL") String state,
-                                    @RequestParam(name = "from", defaultValue = "0") int from,
-                                    @RequestParam(name = "size", defaultValue = "10") int size) {
+                                    @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
+                                    @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<BookingDto> bookingsByBooker =
                 bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state),
                         PageableCreate.pageableCreate(from, size));
@@ -57,8 +61,8 @@ public class BookingController {
     @GetMapping("/owner")
     List<BookingDto> getAllByOwner(@RequestHeader(name = "X-Sharer-User-Id") long userId,
                                    @RequestParam(defaultValue = "ALL") String state,
-                                   @RequestParam(name = "from", defaultValue = "0") int from,
-                                   @RequestParam(name = "size", defaultValue = "10") int size) {
+                                   @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
+                                   @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<BookingDto> bookingsByBooker =
                 bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state),
                         PageableCreate.pageableCreate(from, size));
