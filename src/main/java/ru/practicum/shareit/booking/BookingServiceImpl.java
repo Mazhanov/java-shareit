@@ -58,8 +58,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = findBookingByIdAndCheck(bookingId);
 
         if (booking.getItem().getOwner().getId() != userId) {
-            throw new AccessDeniedException("Вещь " + booking.getItem() + " не пренадлежит пользователю "
-                    + userId);
+            throw new AccessDeniedException("Вещь " + booking.getItem() + " не пренадлежит пользователю " + userId);
         }
 
         if (booking.getStatus().equals(BookingStatus.APPROVED) || booking.getStatus().equals(BookingStatus.REJECTED)) {

@@ -51,8 +51,7 @@ public class BookingController {
                                     @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
                                     @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<BookingDto> bookingsByBooker =
-                bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state),
-                        PageableCreate.pageableCreate(from, size));
+                bookingService.getAllByBooker(userId, BookingState.getStatusFromString(state), PageableCreate.pageableCreate(from, size));
         log.info("Получен список бронирований пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }
@@ -63,8 +62,7 @@ public class BookingController {
                                    @RequestParam(name = "from", defaultValue = "0") @Min(0) int from,
                                    @RequestParam(name = "size", defaultValue = "10") @Min(0) int size) {
         List<BookingDto> bookingsByBooker =
-                bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state),
-                        PageableCreate.pageableCreate(from, size));
+                bookingService.getAllByOwner(userId, BookingState.getStatusFromString(state), PageableCreate.pageableCreate(from, size));
         log.info("Получен список бронирований для вещей пользователя: {}", bookingsByBooker);
         return bookingsByBooker;
     }
