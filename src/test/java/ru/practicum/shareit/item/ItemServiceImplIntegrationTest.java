@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.PageableCreate;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -18,14 +19,15 @@ import java.util.List;
 
 @Transactional
 @SpringBootTest
-@AutoConfigureTestDatabase()
+@AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ItemServiceImplIntegrationTest {
     private final EntityManager em;
     private final ItemServiceImpl itemService;
     private final UserServiceImpl userService;
 
-    /*@Test
+    @Test
     void createTest() {
         UserDto user = new UserDto(1L, "testName", "email@mail.ru");
         UserDto newUser = userService.create(user);
@@ -39,7 +41,7 @@ class ItemServiceImplIntegrationTest {
 
         List<ItemDto> items = itemService.getByUserId(newUser.getId(), PageableCreate.pageableCreate(1, 5));
         Assertions.assertEquals(items.size(), 3);
-    }*/
+    }
 
     @Test
     void searchTest() {

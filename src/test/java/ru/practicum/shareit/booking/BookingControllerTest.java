@@ -69,7 +69,6 @@ class BookingControllerTest {
 
     @Test
     void changeStatusBookingTest() throws Exception {
-        CreateBookingDto createBookingDto = makeCreateBookingDto();
         BookingDto bookingDto = makeBookingDto(1L);
         Item item = makeItem(1L);
         User user = makeUser(1L);

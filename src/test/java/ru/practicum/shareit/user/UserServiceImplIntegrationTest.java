@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserServiceImplIntegrationTest {
     private final EntityManager em;
     private final UserServiceImpl service;
@@ -39,7 +41,6 @@ class UserServiceImplIntegrationTest {
         assertThat(user.getEmail(), equalTo(userDto.getEmail()));
     }
 
-/*
     @Test
     void updateTest_nameUpdate() {
         UserDto userDto = new UserDto(null, "updateName", null);
@@ -55,7 +56,6 @@ class UserServiceImplIntegrationTest {
         assertThat(user.getName(), equalTo(userDto.getName()));
         assertThat(user.getEmail(), equalTo(userCreate.getEmail()));
     }
-*/
 
     private UserDto makeUserDto(long userId) {
         return new UserDto(userId, "testName", "testEmail");
