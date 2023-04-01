@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Slf4j
 @NoArgsConstructor
+@AllArgsConstructor
 public class Comment {
     @Id
     @Column(name = "comment_id", nullable = false)

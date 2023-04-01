@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
 
@@ -12,7 +13,7 @@ public interface BookingService {
 
     BookingDto getBooking(long userId, long bookingId);
 
-    List<BookingDto> getAllByBooker(long userId, BookingState state);
+    List<BookingDto> getAllByBooker(long userId, BookingState state, Pageable pageable);
 
-    List<BookingDto> getAllByOwner(long userId, BookingState state);
+    List<BookingDto> getAllByOwner(long userId, BookingState state, Pageable pageable);
 }

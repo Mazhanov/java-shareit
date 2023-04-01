@@ -20,9 +20,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleObjectNotFoundException(final ObjectNotFoundException exception) {
         log.error("Exception ObjectNotFoundException {}", exception.getMessage(), exception);
-        return new ErrorResponse(
-                exception.getMessage()
-        );
+        return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler
@@ -43,18 +41,14 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         log.error("Exception handleExceptionBadRequest {}", exception.getMessage(), exception);
-        return new ErrorResponse(
-                exception.getMessage()
-        );
+        return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final ValidationException exception) {
         log.error("Exception ValidationException {}", exception.getMessage(), exception);
-        return new ErrorResponse(
-                exception.getMessage()
-        );
+        return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler

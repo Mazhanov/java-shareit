@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -13,6 +14,8 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.RequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -31,10 +34,17 @@ public class ItemServiceImpl implements ItemService {
     private BookingRepository bookingRepository;
     private CommentRepository commentRepository;
 
+    private RequestRepository requestRepository;
+
     @Override
     public ItemDto create(ItemDto dto, long userId) {
         User user = findUserByIdAndCheck(userId);
         Item newItem = ItemMapper.toItem(dto);
+
+        if (dto.getRequestId() != null) {
+            newItem.setRequest(findItemRequestByIdAndCheck(dto.getRequestId()));
+        }
+
         newItem.setOwner(user);
         return ItemMapper.toItemDto(itemRepository.save(newItem));
     }
@@ -75,8 +85,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getByUserId(long userId) {
-        return itemRepository.findAllByOwnerIdOrderByIdAsc(userId).stream()
+    public List<ItemDto> getByUserId(long userId, Pageable pageable) {
+        return itemRepository.findAllByOwnerIdOrderByIdAsc(userId, pageable).stream()
                 .map(ItemMapper::toItemDto)
                 .map(this::getItemWithBooking)
                 .map(this::addComments)
@@ -84,12 +94,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String text) {
+    public List<ItemDto> search(String text, Pageable pageable) {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
 
-        return itemRepository.search(text).stream()
+        return itemRepository.search(text, pageable).stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
@@ -124,6 +134,11 @@ public class ItemServiceImpl implements ItemService {
     private User findUserByIdAndCheck(long id) { // Возвращает юзера по ID и проверяет наличие в БД
         return userRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Пользователь с id" + id + " не найден"));
+    }
+
+    private ItemRequest findItemRequestByIdAndCheck(long id) { // Возвращает бронь по ID и проверяет наличие в БД
+        return requestRepository.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException("Брони с id" + id + " не найдено"));
     }
 
     private ItemDto getItemWithBooking(ItemDto itemDto) {

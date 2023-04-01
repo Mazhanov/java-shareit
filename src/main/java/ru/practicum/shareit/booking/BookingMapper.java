@@ -12,22 +12,12 @@ public class BookingMapper {
         return new Booking(dto.getId(), dto.getStart(), dto.getEnd(), item, user, dto.getStatus());
     }
 
-    public static Booking toBooking(BookingDto dto) {
-        return new Booking(dto.getId(), dto.getStart(), dto.getEnd(), dto.getItem(), dto.getBooker(), dto.getStatus());
-    }
-
     public static BookingItemDto toBookingItemDto(Booking booking) {
         return new BookingItemDto(booking.getId(), booking.getStart(), booking.getEnd(), booking.getBooker().getId());
     }
 
 
     public static BookingDto toBookingDto(Booking booking) {
-        return new BookingDto(booking.getId(), booking.getStart(), booking.getEnd(), booking.getItem(),
-                booking.getBooker(), booking.getStatus());
-    }
-
-    public static CreateBookingDto toCreateBookingDto(Booking booking) {
-        return new CreateBookingDto(booking.getId(), booking.getStart(), booking.getEnd(), booking.getItem().getId(),
-                booking.getBooker().getId(), booking.getStatus());
+        return new BookingDto(booking.getId(), booking.getStart(), booking.getEnd(), booking.getItem(), booking.getBooker(), booking.getStatus());
     }
 }
