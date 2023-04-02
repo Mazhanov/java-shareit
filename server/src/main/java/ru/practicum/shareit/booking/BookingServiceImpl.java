@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if (item.getOwner().getId() == userId) {
-            throw new ValidationException("Владелец вещи не может взять ее в аренду");
+            throw new AccessDeniedException("Владелец вещи не может взять ее в аренду");
         }
 
         Booking booking = BookingMapper.toBooking(dto, item, booker);
