@@ -17,10 +17,7 @@ services:
       - db
       - gateway
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6541/shareit
 
   db:
     image: postgres:13.7-alpine
@@ -29,5 +26,5 @@ services:
       - "6541:5432"
     environment:
       - POSTGRES_DB=shareit
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=shareit
+      - POSTGRES_PASSWORD=shareit
