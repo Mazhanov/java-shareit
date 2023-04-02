@@ -73,8 +73,8 @@ class BookingServiceImplTest {
         when(itemRepository.findById(anyLong()))
                 .thenReturn(Optional.of(item));
 
-        final AccessDeniedException exception = Assertions.assertThrows(
-                AccessDeniedException.class,
+        final ValidationException exception = Assertions.assertThrows(
+                ValidationException.class,
                 () -> bookingService.createBooking(createBookingDto, 1L));
 
         Assertions.assertEquals("Владелец вещи не может взять ее в аренду", exception.getMessage());

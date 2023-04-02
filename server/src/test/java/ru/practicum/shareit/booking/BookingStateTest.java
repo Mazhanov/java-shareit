@@ -7,38 +7,31 @@ class BookingStateTest {
 
     @Test
     void getStatusFromStringTest_all() {
-        Assertions.assertEquals(BookingState.from("ALL"), BookingState.ALL);
+        Assertions.assertEquals(BookingState.from("ALL").get(), BookingState.ALL);
     }
 
     @Test
     void getStatusFromStringTest_current() {
-        Assertions.assertEquals(BookingState.from("CURRENT"), BookingState.CURRENT);
+        Assertions.assertEquals(BookingState.from("CURRENT").get(), BookingState.CURRENT);
     }
 
     @Test
     void getStatusFromStringTest_past() {
-        Assertions.assertEquals(BookingState.from("PAST"), BookingState.PAST);
+        Assertions.assertEquals(BookingState.from("PAST").get(), BookingState.PAST);
     }
 
     @Test
     void getStatusFromStringTest_future() {
-        Assertions.assertEquals(BookingState.from("FUTURE"), BookingState.FUTURE);
+        Assertions.assertEquals(BookingState.from("FUTURE").get(), BookingState.FUTURE);
     }
 
     @Test
     void getStatusFromStringTest_waiting() {
-        Assertions.assertEquals(BookingState.from("WAITING"), BookingState.WAITING);
+        Assertions.assertEquals(BookingState.from("WAITING").get(), BookingState.WAITING);
     }
 
     @Test
     void getStatusFromStringTest_rejected() {
-        Assertions.assertEquals(BookingState.from("REJECTED"), BookingState.REJECTED);
-    }
-
-    @Test
-    void getStatusFromStringTest_Exception() {
-        final UnsupportedStatusException exception = Assertions.assertThrows(
-                UnsupportedStatusException.class,
-                () -> BookingState.from("ALLALL"));
+        Assertions.assertEquals(BookingState.from("REJECTED").get(), BookingState.REJECTED);
     }
 }
